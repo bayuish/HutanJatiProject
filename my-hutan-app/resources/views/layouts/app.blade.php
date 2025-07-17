@@ -1,69 +1,113 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    {{-- Fonts --}}
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    {{-- Bootstrap CSS --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    {{-- Bootstrap Icons CSS --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    {{-- Custom CSS: Menggunakan custom.css karena app.css tidak ditemukan --}}
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            /* overflow: hidden; */ /* Dikomentari untuk memungkinkan scrolling jika konten melebihi viewport */
+        /* Your custom CSS styles */
+        body {
+            background-color: #f8f9fa;
         }
-        .main-wrapper {
+        .sidebar {
+            width: 80px;
+            min-height: 100vh;
+            background-color: #343a40; /* Dark background for sidebar */
+            color: white;
+            padding-top: 20px;
             display: flex;
-            min-height: 100vh; /* Memungkinkan container tumbuh jika konten lebih panjang dari viewport */
-            width: 100vw;
+            flex-direction: column;
+            align-items: center;
         }
-        .content-area {
-            flex-grow: 1; /* Memungkinkan area konten mengisi sisa ruang */
-            overflow-y: auto; /* Memungkinkan scrolling di area konten saja */
-            padding: 20px; /* Padding default untuk konten */
+        .sidebar .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #adb5bd;
+            padding: 10px 0;
+            font-size: 0.75rem;
+            text-align: center;
         }
-
-        /* Styling tambahan untuk sidebar link active */
-        .active-sidebar-link {
-            color: #0d6efd !important; /* Warna biru Bootstrap primary */
-            font-weight: bold;
+        .sidebar .nav-link.active {
+            color: white;
+            background-color: #495057;
+            border-radius: 5px;
+        }
+        .sidebar .nav-link i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        .main-content {
+            padding: 20px;
+            flex-grow: 1;
+        }
+        .card-img-top {
+            height: 140px;
+            object-fit: cover;
+        }
+        .order-item-card img {
+            width: 64px;
+            height: 64px;
+            object-fit: cover;
+        }
+        .overflow-auto {
+            overflow-y: auto;
+        }
+        /* Custom scrollbar for webkit browsers */
+        .overflow-auto::-webkit-scrollbar,
+        .pe-2::-webkit-scrollbar {
+            width: 8px; /* width of the scrollbar */
+        }
+        .overflow-auto::-webkit-scrollbar-track,
+        .pe-2::-webkit-scrollbar-track {
+            background: #f1f1f1; /* color of the tracking area */
+            border-radius: 10px;
+        }
+        .overflow-auto::-webkit-scrollbar-thumb,
+        .pe-2::-webkit-scrollbar-thumb {
+            background: #888; /* color of the scroll thumb */
+            border-radius: 10px;
+        }
+        .overflow-auto::-webkit-scrollbar-thumb:hover,
+        .pe-2::-webkit-scrollbar-thumb:hover {
+            background: #555; /* color of the scroll thumb on hover */
         }
     </style>
-
-    {{-- ⭐ Pindahkan variabel ASSET_URL ke dalam <head> untuk ketersediaan global ⭐ --}}
-    <script>
-        const ASSET_URL = "{{ asset('') }}"; // Ini akan menghasilkan URL dasar proyek Anda
-    </script>
 </head>
-<body class="antialiased">
-    <div class="main-wrapper">
-        {{-- Panggil komponen sidebar. Ini akan muncul di semua halaman yang menggunakan layout ini. --}}
-        <x-layout.sidebar />
+<body>
+    <div class="d-flex">
+        {{-- Sidebar --}}
+        <div class="sidebar">
+            <a class="navbar-brand text-white fw-bold mb-4" href="#">POS</a>
+            <nav class="nav flex-column gap-2">
+                <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-grid-fill"></i>Dashboard</a>
+                <a class="nav-link" href="#"><i class="bi bi-menu-button-wide-fill"></i>Menu</a>
+                <a class="nav-link" href="#"><i class="bi bi-box-seam-fill"></i>Stock</a>
+                <a class="nav-link" href="#"><i class="bi bi-border-all"></i>Table</a>
+                <a class="nav-link" href="#"><i class="bi bi-clock-history"></i>History</a>
+                <a class="nav-link" href="#"><i class="bi bi-gear-fill"></i>Settings</a>
+            </nav>
+        </div>
 
-        <div class="content-area">
-            @yield('content') {{-- Konten spesifik dari setiap halaman akan dirender di sini --}}
+        {{-- Main Content --}}
+        <div class="main-content flex-grow-1">
+            @yield('content')
         </div>
     </div>
 
-    {{-- Bootstrap Bundle with Popper (JavaScript) --}}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    {{-- JavaScript kustom Anda (custom.js sekarang dimuat di menu/index.blade.php) --}}
-    {{-- <script src="{{ asset('js/custom.js') }}"></script> --}}
+    {{-- Inject ASSET_URL into JavaScript --}}
+    <script>
+        // Define ASSET_URL for use in JavaScript.
+        // This assumes your public directory is the base for assets.
+        const ASSET_URL = "{{ asset('/') }}";
+        // If your images are directly in 'public/img/', and your products.image only contain the filename,
+        // you might need: const ASSET_URL = "{{ asset('img/') }}/";
+        // However, with `image: "img/products/..."` in JS, `{{ asset('/') }}` is usually correct.
+    </script>
+    <script src="{{ asset('js/custom.js') }}"></script>
 </body>
 </html>

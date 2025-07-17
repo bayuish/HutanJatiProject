@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        {{-- Category Filter Buttons --}}
+        {{-- Category Filter Buttons (assuming x-ui.category-filter-button exists) --}}
         <div class="d-flex flex-nowrap overflow-auto pb-2 mb-4 gap-3">
             <x-ui.category-filter-button name="All menu" icon="bi-grid" active />
             <x-ui.category-filter-button name="Appetizer" icon="bi-egg-fried" />
@@ -33,9 +33,9 @@
             <x-ui.category-filter-button name="Beverages" icon="bi-cup-straw" />
         </div>
 
-        {{-- Product List --}}
+        {{-- Product List Container --}}
         <div id="product-list-container" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 overflow-auto pe-2">
-            {{-- Produk akan dirender via JS --}}
+            {{-- Products will be rendered here by JavaScript --}}
         </div>
     </div>
 
@@ -75,7 +75,8 @@
         </h3>
         <div class="flex-grow-1 overflow-auto pe-2 mb-4">
             <div id="order-items-list" class="order-items-list">
-                {{-- Akan diisi oleh JavaScript --}}
+                {{-- Ordered items will be dynamically inserted here by JavaScript --}}
+                <p class="text-muted text-center mt-3">Your order list is empty.</p>
             </div>
         </div>
 
@@ -100,10 +101,4 @@
         </button>
     </div>
 </div>
-
-{{-- Inject ASSET_URL ke JS --}}
-<script>
-    const ASSET_URL = "{{ asset('') }}";
-</script>
-<script src="{{ asset('js/custom.js') }}"></script>
 @endsection
